@@ -26,8 +26,10 @@ const teste = () => {
 <style lang="scss" scoped>
 .check {
   width: 100%;
-  border: 1px solid green;
+  background: rgba(0, 128, 0, 0.104);
   margin-top: 20px;
+  border: 2px solid green;
+
   padding: 20px;
   border-radius: 4px;
   max-height: 300px;
@@ -45,6 +47,7 @@ const teste = () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
+  background: rgba(0, 128, 0, 0.158);
 }
 #icon {
   color: green;

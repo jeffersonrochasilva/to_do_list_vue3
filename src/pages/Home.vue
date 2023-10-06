@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div style="width: 100%; margin-bottom: 20px">
+    <div style="width: 100%; margin-bottom: 40px; margin-top: 20px">
       <span class="title">Planilha de atividades com order de prioridades</span>
     </div>
 
@@ -15,8 +15,8 @@
       />
     </div>
     <ActivitiesCheck />
-    <v-snackbar v-model="snackbar" :timeout="timeout">
-      {{ text }}
+    <v-snackbar v-model="valueSnackbar" :color="colorSnackbar">
+      {{ textSnackbar }}
     </v-snackbar>
   </div>
 </template>
@@ -25,12 +25,21 @@
 import Header from "../components/Header/index.vue";
 import CardFirst from "../components/CardFirst/index.vue";
 import ActivitiesCheck from "../components/ActivitiesCheck/index.vue";
-import { ref, computed } from "vue";
+import { ref, computed, ComputedRef } from "vue";
 
 import { useAppStore } from "../store/app";
 
 const appStore = useAppStore();
-const text = ref(`hello`);
+const colorSnackbar: ComputedRef<string> = computed(() => {
+  return appStore.color;
+});
+
+const textSnackbar: ComputedRef<string> = computed(() => {
+  return appStore.text;
+});
+const valueSnackbar: ComputedRef<boolean> = computed(() => {
+  return appStore.snackbar;
+});
 
 const dataOne = computed(() => {
   return appStore.urgentemente;
@@ -45,15 +54,18 @@ const dataThree = computed(() => {
 const setDataThree = (item: any) => {
   appStore.setSeSobrarTempo(item);
   appStore.pushInActivitiesCheck(item);
+  appStore.setSnackbar("Parabéns, atividade concluida", "success");
 };
 const setDataTwo = (item: any) => {
   appStore.setoQuantoAntes(item);
   appStore.pushInActivitiesCheck(item);
+  appStore.setSnackbar("Parabéns, atividade concluida", "success");
 };
 
 const setDataOne = (item: any) => {
   appStore.setUrgentemente(item);
   appStore.pushInActivitiesCheck(item);
+  appStore.setSnackbar("Parabéns, atividade concluida", "success");
 };
 </script>
 
@@ -69,7 +81,7 @@ const setDataOne = (item: any) => {
 }
 .title {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
   color: gray;
 }
 .content {

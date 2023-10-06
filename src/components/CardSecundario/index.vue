@@ -1,7 +1,13 @@
 <template>
   <div class="secund">
     <span>{{ activity ? activity : "Hello word" }}</span>
-    <h1 @click="setData(activity)">X</h1>
+    <span
+      id="icon"
+      @click="setData(activity)"
+      class="material-symbols-outlined"
+    >
+      check
+    </span>
   </div>
 </template>
 
@@ -22,5 +28,10 @@ defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 4px;
+  background: rgba(255, 0, 0, 0.104);
+}
+#icon {
+  color: red;
 }
 </style>

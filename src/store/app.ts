@@ -13,10 +13,14 @@ interface ActivitiesFace {
 // Interface para representar o estado do store
 interface AppState {
   nome: Ref<string>;
+  color: Ref<string>;
+  text: Ref<string>;
+  snackbar: Ref<boolean>;
   urgentemente: Ref<TaskItem[]>;
   oQuantoAntes: Ref<TaskItem[]>;
   seSobrarTempo: Ref<TaskItem[]>;
   pushInActivitiesCheck: Ref<any>;
+  setSnackbar: Ref<any>;
   setUrgentemente: Ref<any>;
   setSeSobrarTempo: Ref<any>;
   setoQuantoAntes: Ref<any>;
@@ -46,6 +50,9 @@ export const useAppStore = defineStore("app", () => {
   ]);
 
   const activitiesCheck = ref([{ name: "colocar o lixa pra fora" }]);
+  const color: Ref<string> = ref("");
+  const text: Ref<string> = ref("");
+  const snackbar: Ref<boolean> = ref(false);
 
   const setUrgentemente = (item: string) => {
     const arr = urgentemente.value.filter((params) => params.text != item);
@@ -81,12 +88,25 @@ export const useAppStore = defineStore("app", () => {
       id: seSobrarTempo.value.length + 2,
     });
   };
+
+  const setSnackbar = (item: string, params: string) => {
+    text.value = item;
+    color.value = params;
+    snackbar.value = true;
+    setTimeout(() => {
+      snackbar.value = false;
+    }, 3000);
+  };
   return {
+    color,
     nome,
+    text,
+    snackbar,
     urgentemente,
     oQuantoAntes,
     seSobrarTempo,
     activitiesCheck,
+    setSnackbar,
     setoQuantoAntes,
     setUrgentemente,
     setSeSobrarTempo,

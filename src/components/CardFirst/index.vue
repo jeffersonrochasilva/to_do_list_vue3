@@ -21,8 +21,9 @@ defineProps<{
 .first {
   width: 400px;
   border-radius: 4px;
-  border: 1px solid red;
+  background: rgba(255, 0, 0, 0.065);
   margin-top: 20px;
+  border: 2px solid red;
   padding: 20px;
   display: flex;
   flex-direction: column;
