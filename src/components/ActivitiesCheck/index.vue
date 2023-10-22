@@ -35,12 +35,7 @@ const teste = () => {
   max-height: 300px;
   display: flex;
   justify-content: space-around;
-  /* flex-direction: column; */
   flex-wrap: wrap;
-  /* display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: flex-start; */
 }
 .tesk {
   border: 1px solid black;
