@@ -6,6 +6,7 @@
       variant="outlined"
       placeholder="Adicione sua atividade"
     />
+
     <div class="campSwitch">
       <v-switch
         v-model="model"
@@ -73,7 +74,7 @@ const addActivity = () => {
 <style lang="scss" scoped>
 .header {
   padding: 20px;
-  height: 100px;
+  height: 160px;
   border-radius: 4px;
   border: 2px solid black;
   width: 100%;
@@ -81,6 +82,7 @@ const addActivity = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 .title {
   font-family: sans-serif;
@@ -93,7 +95,7 @@ const addActivity = () => {
   margin-bottom: 15px;
 }
 .campSwitch {
-  width: 40%;
+  width: 500px;
   height: 100%;
   display: flex;
   align-items: center;
