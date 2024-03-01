@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
-
+import axios from "axios";
 // Interface para representar um item de tarefa
 interface TaskItem {
   text: string;
@@ -19,35 +19,31 @@ interface AppState {
   urgentemente: Ref<TaskItem[]>;
   oQuantoAntes: Ref<TaskItem[]>;
   seSobrarTempo: Ref<TaskItem[]>;
+  concluidas: Ref<TaskItem[]>;
+  getAllApis: Ref<any>;
   pushInActivitiesCheck: Ref<any>;
   setSnackbar: Ref<any>;
   setUrgentemente: Ref<any>;
   setSeSobrarTempo: Ref<any>;
   setoQuantoAntes: Ref<any>;
-  pushUrgentemente: Ref<any>;
+  getActivitiesCheck: Ref<any>;
   pushOQuantoAntes: Ref<any>;
   pushSeSobrarTempo: Ref<any>;
+  getDateUrgentemente: Ref<any>;
+  deleteItemActivitiesCheck: Ref<any>;
+  registerNewactivity: Ref<any>;
+  getDateoQuantoAntes: Ref<any>;
+  getDateseSobrarTempo: Ref<any>;
   activitiesCheck: Ref<ActivitiesFace[]>;
 }
 
 export const useAppStore = defineStore("app", () => {
   const nome: Ref<string> = ref("jefferson");
 
-  const urgentemente: Ref<TaskItem[]> = ref([
-    { text: "pagar a conta de luz", id: 1 },
-    { text: "fazer compras", id: 2 },
-    { text: "pagar a conta de gaz", id: 3 },
-  ]);
-  const oQuantoAntes: Ref<TaskItem[]> = ref([
-    { text: "ir ao mercado", id: 1 },
-    { text: "cortar o cabelo", id: 2 },
-    { text: "fazer as unhas", id: 3 },
-  ]);
-  const seSobrarTempo: Ref<TaskItem[]> = ref([
-    { text: "visitar os amigos", id: 1 },
-    { text: "ir ao bar", id: 2 },
-    { text: "comprar roupas", id: 3 },
-  ]);
+  const urgentemente: Ref<TaskItem[]> = ref([]);
+  const oQuantoAntes: Ref<TaskItem[]> = ref([]);
+  const seSobrarTempo: Ref<TaskItem[]> = ref([]);
+  const concluidas: Ref<TaskItem[]> = ref([]);
 
   const activitiesCheck = ref([{ name: "colocar o lixa pra fora" }]);
   const color: Ref<string> = ref("");
@@ -57,28 +53,31 @@ export const useAppStore = defineStore("app", () => {
   const setUrgentemente = (item: string) => {
     const arr = urgentemente.value.filter((params) => params.text != item);
     urgentemente.value = arr;
-    console.log(urgentemente.value, `arr`);
   };
   const setoQuantoAntes = (item: string) => {
     const arr = oQuantoAntes.value.filter((params) => params.text != item);
     oQuantoAntes.value = arr;
-    console.log(oQuantoAntes.value, `arr`);
   };
   const setSeSobrarTempo = (item: string) => {
     const arr = seSobrarTempo.value.filter((params) => params.text != item);
     seSobrarTempo.value = arr;
-    console.log(seSobrarTempo.value, `arr`);
   };
 
-  const pushInActivitiesCheck = (item: string) => {
-    activitiesCheck.value.push({ name: item });
-    console.log(activitiesCheck.value, `value`);
+  const pushInActivitiesCheck = async (item: TaskItem) => {
+    const obj = {
+      text: item.text,
+      id: concluidas.value.length * 10,
+    };
+    try {
+      await axios.post("http://localhost:3000/concluidas", obj);
+      getDateUrgentemente();
+      getDateoQuantoAntes();
+      getDateseSobrarTempo();
+    } catch (error: any) {
+      console.log(error, "error");
+    }
   };
 
-  const pushUrgentemente = (item: string) => {
-    urgentemente.value.push({ text: item, id: oQuantoAntes.value.length + 2 });
-    console.log(urgentemente.value, `ùrgentemente`);
-  };
   const pushOQuantoAntes = (item: string) => {
     oQuantoAntes.value.push({ text: item, id: oQuantoAntes.value.length + 2 });
   };
@@ -89,6 +88,55 @@ export const useAppStore = defineStore("app", () => {
     });
   };
 
+  const getDateUrgentemente = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/urgentemente");
+      urgentemente.value = response.data;
+    } catch (error) {
+      console.log(error, "error");
+    }
+  };
+
+  const getDateoQuantoAntes = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/oQuantoAntes");
+      oQuantoAntes.value = response.data;
+    } catch (error) {
+      console.log(error, "error");
+    }
+  };
+
+  const getActivitiesCheck = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/concluidas");
+      concluidas.value = response.data;
+    } catch (e: any) {
+      console.log(e, "error");
+    }
+  };
+
+  const getDateseSobrarTempo = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/seSobrarTempo");
+      seSobrarTempo.value = response.data;
+    } catch (error) {
+      console.log(error, "error");
+    }
+  };
+
+  const registerNewactivity = async (items: any) => {
+    const obj = {
+      text: items,
+      id: (urgentemente.value.length * 10).toString,
+    };
+    try {
+      await axios.post("http://localhost:3000/urgentemente", obj);
+      getDateUrgentemente();
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
   const setSnackbar = (item: string, params: string) => {
     text.value = item;
     color.value = params;
@@ -97,22 +145,44 @@ export const useAppStore = defineStore("app", () => {
       snackbar.value = false;
     }, 3000);
   };
+  const deleteItemActivitiesCheck = async (item: any) => {
+    console.log("item4", item);
+    try {
+      await axios.delete(`http://localhost:3000/concluidas/${item}`);
+      getActivitiesCheck();
+    } catch (error: any) {
+      console.log("ërror", error);
+    }
+  };
+  const getAllApis = async () => {
+    await getDateUrgentemente();
+    await getDateoQuantoAntes();
+    await getDateseSobrarTempo();
+  };
+  getActivitiesCheck();
   return {
     color,
     nome,
     text,
     snackbar,
+    concluidas,
     urgentemente,
     oQuantoAntes,
     seSobrarTempo,
     activitiesCheck,
+    getAllApis,
     setSnackbar,
     setoQuantoAntes,
     setUrgentemente,
     setSeSobrarTempo,
-    pushUrgentemente,
     pushOQuantoAntes,
     pushSeSobrarTempo,
+    registerNewactivity,
+    getDateUrgentemente,
+    getDateoQuantoAntes,
+    getDateseSobrarTempo,
     pushInActivitiesCheck,
+    getActivitiesCheck,
+    deleteItemActivitiesCheck,
   } as unknown as AppState;
 });

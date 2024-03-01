@@ -1,11 +1,17 @@
 <template>
   <div class="header">
-    <v-text-field
-      v-model="activity"
-      class="campActivities"
-      variant="outlined"
-      placeholder="Adicione sua atividade"
-    />
+    <div class="campBox">
+      <div class="camp">
+        <v-text-field
+          v-model="activity"
+          class="campActivities"
+          variant="outlined"
+          placeholder="Adicione sua atividade"
+          :counter="10"
+        />
+      </div>
+      <v-btn class="btn" @click="addActivity()">Adicionar</v-btn>
+    </div>
 
     <div class="campSwitch">
       <v-switch
@@ -33,7 +39,6 @@
         label="Se sobrar tempo"
       ></v-switch>
     </div>
-    <v-btn class="btn" @click="addActivity()">Adicionar</v-btn>
   </div>
 </template>
 
@@ -53,11 +58,12 @@ const addActivity = () => {
   if (!model.value) {
     return appStopre.setSnackbar(
       "Escolha a importancia da sua atividade",
-      "error"
+      "warning"
     );
   }
   if (model.value === `Urgentemente`) {
-    appStopre.pushUrgentemente(activity.value);
+    console.log(activity.value, "teste");
+    appStopre.registerNewactivity(activity.value);
   }
   if (model.value === `O quanto antes`) {
     appStopre.pushOQuantoAntes(activity.value);
@@ -74,22 +80,30 @@ const addActivity = () => {
 <style lang="scss" scoped>
 .header {
   padding: 20px;
-  height: 160px;
+  min-height: 160px;
   border-radius: 4px;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   width: 100%;
-  background: rgba(0, 0, 0, 0.143);
-  display: flex;
+  background: #fff;
+  /* display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap; */
+}
+.campBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.camp {
+  width: 90%;
 }
 .title {
   font-family: sans-serif;
 }
 .campActivities {
   border-radius: 4px;
-  width: 350px;
+  /* width: 350px; */
   height: 40px;
   padding: 0 7px;
   margin-bottom: 15px;
@@ -102,6 +116,7 @@ const addActivity = () => {
 }
 .btn {
   background: black;
+  height: 55px;
   color: white;
 }
 </style>

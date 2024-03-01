@@ -1,7 +1,14 @@
 <template>
-  <router-view />
+  <div class="app">
+    <Tolbar />
+    <router-view />
+  </div>
 </template>
-
-<script lang="ts" setup>
-  //
+<script setup lang="ts">
+import Tolbar from "./components/Tolbar/index.vue";
 </script>
+<style lang="scss" scoped>
+.app {
+  width: 100%;
+}
+</style>
