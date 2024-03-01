@@ -1,38 +1,44 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
   <div class="first">
     <span class="title">{{ title ? title : "Card de teste" }}</span>
-    <div v-for="item in data" :key="item.id">
-      <CardSecund :activity="item.text" :setData="setData" />
+    <div
+      v-if="data.length > 0"
+      v-for="item in data"
+      :key="item.id"
+      class="line"
+    >
+      <CardSecund :activity="item.text" :item="item" />
     </div>
+    <span v-else>todas as atividades foram comcluidas!</span>
   </div>
 </template>
-
 <script lang="ts" setup>
 import CardSecund from "../../components/CardSecundario/index.vue";
 
 defineProps<{
   title?: string | undefined;
   data?: any;
-  setData: Function;
+  setData?: Function;
 }>();
 </script>
 
 <style lang="scss" scoped>
 .first {
-  width: 400px;
   border-radius: 4px;
-  background: rgba(255, 0, 0, 0.065);
+  background: #fff;
   margin-top: 20px;
-  border: 2px solid red;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 .title {
-  font-size: 20px;
-  color: #303030;
-  font-weight: bold;
-  margin-bottom: 20px;
+  color: black;
+  font-family: sans-serif;
+  font-size: 18px;
+}
+.line {
+  width: 100%;
 }
 </style>

@@ -1,0 +1,74 @@
+{
+  "concluidas": [
+    {
+      "text": "pagar a conta de luz",
+      "id": "1"
+    },
+    {
+      "text": "fazer compras",
+      "id": "2"
+    },
+    {
+      "id": "20",
+      "text": "ir ao mercado"
+    },
+    {
+      "id": "30",
+      "text": "visitar os amigos"
+    },
+    {
+      "id": 40,
+      "text": "ir ao mercado"
+    }
+  ],
+  "urgentemente": [
+    {
+      "text": "pagar a conta de luz",
+      "id": "1"
+    },
+    {
+      "text": "fazer compras",
+      "id": "2"
+    },
+    {
+      "text": "pagar a conta de gaz",
+      "id": "3"
+    },
+    {
+      "id": 4,
+      "text": "ir ao mercado"
+    },
+    {
+      "id": 40,
+      "text": "teste"
+    }
+  ],
+  "oQuantoAntes": [
+    {
+      "text": "ir ao mercado",
+      "id": "1"
+    },
+    {
+      "text": "cortar o cabelo",
+      "id": "2"
+    },
+    {
+      "text": "fazer as unhas",
+      "id": "3"
+    }
+  ],
+  "seSobrarTempo": [
+    {
+      "text": "visitar os amigos",
+      "id": "1"
+    },
+    {
+      "text": "ir ao bar",
+      "id": "2"
+    },
+    {
+      "text": "comprar roupas",
+      "id": "3"
+    }
+  ]
+}
