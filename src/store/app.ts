@@ -16,6 +16,8 @@ interface AppState {
   color: Ref<string>;
   text: Ref<string>;
   snackbar: Ref<boolean>;
+  dateFormated: Ref<TaskItem[]>;
+  typeOfRegister: Ref<string>;
   urgentemente: Ref<TaskItem[]>;
   oQuantoAntes: Ref<TaskItem[]>;
   seSobrarTempo: Ref<TaskItem[]>;
@@ -23,6 +25,7 @@ interface AppState {
   getAllApis: Ref<any>;
   pushInActivitiesCheck: Ref<any>;
   setSnackbar: Ref<any>;
+  setDateFormated: Ref<any>;
   setUrgentemente: Ref<any>;
   setSeSobrarTempo: Ref<any>;
   setoQuantoAntes: Ref<any>;
@@ -39,11 +42,12 @@ interface AppState {
 
 export const useAppStore = defineStore("app", () => {
   const nome: Ref<string> = ref("jefferson");
-
+  const typeOfRegister: Ref<string> = ref("");
   const urgentemente: Ref<TaskItem[]> = ref([]);
   const oQuantoAntes: Ref<TaskItem[]> = ref([]);
   const seSobrarTempo: Ref<TaskItem[]> = ref([]);
   const concluidas: Ref<TaskItem[]> = ref([]);
+  const dateFormated: Ref<TaskItem[]> = ref([]);
 
   const activitiesCheck = ref([{ name: "colocar o lixa pra fora" }]);
   const color: Ref<string> = ref("");
@@ -66,13 +70,11 @@ export const useAppStore = defineStore("app", () => {
   const pushInActivitiesCheck = async (item: TaskItem) => {
     const obj = {
       text: item.text,
-      id: concluidas.value.length * 10,
+      id: (Math.floor(Math.random() * 900) + 100).toString(),
     };
     try {
       await axios.post("http://localhost:3000/concluidas", obj);
-      getDateUrgentemente();
-      getDateoQuantoAntes();
-      getDateseSobrarTempo();
+      getAllApis();
     } catch (error: any) {
       console.log(error, "error");
     }
@@ -89,15 +91,20 @@ export const useAppStore = defineStore("app", () => {
   };
 
   const getDateUrgentemente = async () => {
+    // console.log("chamou urgentemente");
+
     try {
       const response = await axios.get("http://localhost:3000/urgentemente");
       urgentemente.value = response.data;
+      // setDateFormated(urgentemente.value);
     } catch (error) {
       console.log(error, "error");
     }
   };
 
   const getDateoQuantoAntes = async () => {
+    // console.log("chamou o quanto antes");
+
     try {
       const response = await axios.get("http://localhost:3000/oQuantoAntes");
       oQuantoAntes.value = response.data;
@@ -116,6 +123,7 @@ export const useAppStore = defineStore("app", () => {
   };
 
   const getDateseSobrarTempo = async () => {
+    // console.log("chamou se sobrar tempo");
     try {
       const response = await axios.get("http://localhost:3000/seSobrarTempo");
       seSobrarTempo.value = response.data;
@@ -124,14 +132,16 @@ export const useAppStore = defineStore("app", () => {
     }
   };
 
-  const registerNewactivity = async (items: any) => {
+  const registerNewactivity = async (itemOne?: string, itemTwo?: string) => {
+    // console.log(`http://localhost:3000/${typeOfRegister.value}`, "sdfsasdsd");
+    const newId = Math.floor(Math.random() * 900) + 100;
     const obj = {
-      text: items,
-      id: (urgentemente.value.length * 10).toString,
+      text: itemTwo,
+      id: newId.toString(),
     };
     try {
-      await axios.post("http://localhost:3000/urgentemente", obj);
-      getDateUrgentemente();
+      await axios.post(`http://localhost:3000/${typeOfRegister.value}`, obj);
+      getAllApis();
     } catch (e) {
       console.log("error", e);
     }
@@ -146,13 +156,16 @@ export const useAppStore = defineStore("app", () => {
     }, 3000);
   };
   const deleteItemActivitiesCheck = async (item: any) => {
-    console.log("item4", item);
+    // console.log("item4", item);
     try {
       await axios.delete(`http://localhost:3000/concluidas/${item}`);
       getActivitiesCheck();
     } catch (error: any) {
       console.log("ërror", error);
     }
+  };
+  const setDateFormated = (array: any) => {
+    console.log("testando mais uma ves");
   };
   const getAllApis = async () => {
     await getDateUrgentemente();
@@ -167,11 +180,14 @@ export const useAppStore = defineStore("app", () => {
     snackbar,
     concluidas,
     urgentemente,
+    dateFormated,
     oQuantoAntes,
     seSobrarTempo,
     activitiesCheck,
     getAllApis,
     setSnackbar,
+    setDateFormated,
+    typeOfRegister,
     setoQuantoAntes,
     setUrgentemente,
     setSeSobrarTempo,

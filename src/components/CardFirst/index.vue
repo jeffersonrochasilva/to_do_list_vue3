@@ -11,11 +11,12 @@
       <CardSecund :activity="item.text" :item="item" />
     </div>
     <span v-else>todas as atividades foram comcluidas!</span>
+    <Footer />
   </div>
 </template>
 <script lang="ts" setup>
 import CardSecund from "../../components/CardSecundario/index.vue";
-
+import Footer from "../../components/Footer/index.vue";
 defineProps<{
   title?: string | undefined;
   data?: any;
@@ -37,6 +38,7 @@ defineProps<{
   color: black;
   font-family: sans-serif;
   font-size: 18px;
+  margin-bottom: 20px;
 }
 .line {
   width: 100%;

@@ -1,9 +1,6 @@
 <template>
   <div class="navbar">
     <div>
-      <!-- <div class="boxTitle">
-        <v-list-item-title class="text-h6"> Application </v-list-item-title>
-      </div> -->
       <v-list-item v-for="item in items" :key="item.title" link>
         <div class="teste" @click="toGORoute(item.route)">
           <div class="boxIcon">
@@ -24,12 +21,20 @@ import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const items: Ref<any> = ref([
-  { title: "Urgentemente", icon: "mdi-view-dashboard", route: "/" },
-  { title: "O quanto antes", icon: "mdi-image", route: "/oquantoantes" },
-  { title: "Se sobrar tempo", icon: "mdi-help-box", route: "/sesobrartempo" },
+  { title: "Urgentemente", icon: "mdi-clock-outline", route: "/" },
+  {
+    title: "O quanto antes",
+    icon: "mdi-clock-outline",
+    route: "/oquantoantes",
+  },
+  {
+    title: "Se sobrar tempo",
+    icon: "mdi-clock-outline",
+    route: "/sesobrartempo",
+  },
   {
     title: "Atividades concluidas",
-    icon: "mdi-help-box",
+    icon: "mdi-check",
     route: "/activitiescheck",
   },
 ]);
@@ -42,6 +47,11 @@ const toGORoute = (item: string) => {
   height: calc(100vh - 64px);
   width: 250px;
   border-right: 1px solid gray;
+}
+@media (max-width: 769px) {
+  .navbar {
+    display: none;
+  }
 }
 .boxTitle {
   height: 64px;

@@ -17,7 +17,7 @@
       <v-switch
         v-model="model"
         hide-details
-        true-value="Urgentemente"
+        true-value="urgentemente"
         false-value="null"
         label="Urgentemente"
         color="black"
@@ -25,7 +25,7 @@
       <v-switch
         v-model="model"
         hide-details
-        true-value="O quanto antes"
+        true-value="oQuantoAntes"
         false-value="null"
         color="black"
         label="O quanto antes"
@@ -33,7 +33,7 @@
       <v-switch
         v-model="model"
         hide-details
-        true-value="Se sobrer tempo"
+        true-value="seSobrarTempo"
         false-value="null"
         color="black"
         label="Se sobrar tempo"
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from "vue";
+import { Ref, ref, watch } from "vue";
 import { useAppStore } from "../../store/app";
 
 const appStopre = useAppStore();
@@ -61,20 +61,17 @@ const addActivity = () => {
       "warning"
     );
   }
-  if (model.value === `Urgentemente`) {
-    console.log(activity.value, "teste");
-    appStopre.registerNewactivity(activity.value);
-  }
-  if (model.value === `O quanto antes`) {
-    appStopre.pushOQuantoAntes(activity.value);
-  }
-  if (model.value === `Se sobrer tempo`) {
-    appStopre.pushSeSobrarTempo(activity.value);
-  }
+  appStopre.registerNewactivity(model.value, activity.value);
+
   activity.value = "";
   model.value = "";
   return appStopre.setSnackbar("Atividade cadastrada com sucesso", "success");
 };
+
+watch(model, () => {
+  appStopre.typeOfRegister = model.value;
+  console.log("chamou", appStopre.typeOfRegister);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -82,13 +79,8 @@ const addActivity = () => {
   padding: 20px;
   min-height: 160px;
   border-radius: 4px;
-  /* border: 2px solid black; */
   width: 100%;
   background: #fff;
-  /* display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap; */
 }
 .campBox {
   width: 100%;
@@ -112,7 +104,7 @@ const addActivity = () => {
   width: 500px;
   height: 100%;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
 }
 .btn {
   background: black;

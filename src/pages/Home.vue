@@ -15,7 +15,6 @@
         <div class="content">
           <RouterView />
         </div>
-        <!-- <ActivitiesCheck /> -->
       </div>
 
       <v-snackbar v-model="valueSnackbar" :color="colorSnackbar">
@@ -28,8 +27,6 @@
 <script lang="ts" setup>
 import Form from "../components/Form/index.vue";
 import Navigationbarr from "../components/NavigationBar/index.vue";
-// import ActivitiesCheck from "../components/ActivitiesCheck/index.vue";
-// import Tolbar from "../components/Tolbar/index.vue";
 import { computed, ComputedRef, onMounted } from "vue";
 import { useAppStore } from "../store/app";
 
@@ -64,6 +61,16 @@ const valueSnackbar: ComputedRef<boolean> = computed(() => {
 .right {
   width: calc(100% - 250px);
   padding: 20px;
+}
+@media (max-width: 768px) {
+  .left {
+    width: 0px;
+  }
+
+  .right {
+    width: 100%;
+    padding: 20px;
+  }
 }
 
 .title {
