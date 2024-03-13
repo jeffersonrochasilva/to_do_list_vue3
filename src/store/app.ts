@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
 import axios from "axios";
+import { usePagination } from "./pagination";
 // Interface para representar um item de tarefa
 interface TaskItem {
   text: string;
+  type: string;
   id: number;
 }
 interface ActivitiesFace {
@@ -13,35 +15,45 @@ interface ActivitiesFace {
 // Interface para representar o estado do store
 interface AppState {
   nome: Ref<string>;
-  color: Ref<string>;
+  teste: Ref<string>;
   text: Ref<string>;
+  color: Ref<string>;
+  setTeste: Ref<any>;
+  getAllApis: Ref<any>;
+  setSnackbar: Ref<any>;
   snackbar: Ref<boolean>;
-  dateFormated: Ref<TaskItem[]>;
+  setDateFormated: Ref<any>;
+  editValueInJson: Ref<any>;
+  setUrgentemente: Ref<any>;
+  setoQuantoAntes: Ref<any>;
+  setSeSobrarTempo: Ref<any>;
+  deleteValueInJson: Ref<any>;
+  concluidas: Ref<TaskItem[]>;
   typeOfRegister: Ref<string>;
+  deleteoQuantoAntes: Ref<any>;
+  editarUrgentemente: Ref<any>;
+  deleteUrgentemente: Ref<any>;
+  editaroQuantoAntes: Ref<any>;
+  getActivitiesCheck: Ref<any>;
+  deleteseSobrarTempo: Ref<any>;
+  dateFormated: Ref<TaskItem[]>;
   urgentemente: Ref<TaskItem[]>;
   oQuantoAntes: Ref<TaskItem[]>;
-  seSobrarTempo: Ref<TaskItem[]>;
-  concluidas: Ref<TaskItem[]>;
-  getAllApis: Ref<any>;
-  pushInActivitiesCheck: Ref<any>;
-  setSnackbar: Ref<any>;
-  setDateFormated: Ref<any>;
-  setUrgentemente: Ref<any>;
-  setSeSobrarTempo: Ref<any>;
-  setoQuantoAntes: Ref<any>;
-  getActivitiesCheck: Ref<any>;
-  pushOQuantoAntes: Ref<any>;
-  pushSeSobrarTempo: Ref<any>;
   getDateUrgentemente: Ref<any>;
-  deleteItemActivitiesCheck: Ref<any>;
   registerNewactivity: Ref<any>;
   getDateoQuantoAntes: Ref<any>;
+  editarseSobrarTempo: Ref<any>;
+  seSobrarTempo: Ref<TaskItem[]>;
   getDateseSobrarTempo: Ref<any>;
+  pushInActivitiesCheck: Ref<any>;
+  deleteItemActivitiesCheck: Ref<any>;
   activitiesCheck: Ref<ActivitiesFace[]>;
 }
 
 export const useAppStore = defineStore("app", () => {
+  const pagination = usePagination();
   const nome: Ref<string> = ref("jefferson");
+  const teste: Ref<string> = ref("");
   const typeOfRegister: Ref<string> = ref("");
   const urgentemente: Ref<TaskItem[]> = ref([]);
   const oQuantoAntes: Ref<TaskItem[]> = ref([]);
@@ -70,41 +82,30 @@ export const useAppStore = defineStore("app", () => {
   const pushInActivitiesCheck = async (item: TaskItem) => {
     const obj = {
       text: item.text,
+      type: item.type,
       id: (Math.floor(Math.random() * 900) + 100).toString(),
     };
+    console.log("item do inicio", item);
+    console.log("objeto do inicio", obj);
     try {
       await axios.post("http://localhost:3000/concluidas", obj);
+      await deleteValueInJson(item);
       getAllApis();
     } catch (error: any) {
       console.log(error, "error");
     }
   };
 
-  const pushOQuantoAntes = (item: string) => {
-    oQuantoAntes.value.push({ text: item, id: oQuantoAntes.value.length + 2 });
-  };
-  const pushSeSobrarTempo = (item: string) => {
-    seSobrarTempo.value.push({
-      text: item,
-      id: seSobrarTempo.value.length + 2,
-    });
-  };
-
   const getDateUrgentemente = async () => {
-    // console.log("chamou urgentemente");
-
     try {
       const response = await axios.get("http://localhost:3000/urgentemente");
       urgentemente.value = response.data;
-      // setDateFormated(urgentemente.value);
     } catch (error) {
       console.log(error, "error");
     }
   };
 
   const getDateoQuantoAntes = async () => {
-    // console.log("chamou o quanto antes");
-
     try {
       const response = await axios.get("http://localhost:3000/oQuantoAntes");
       oQuantoAntes.value = response.data;
@@ -123,7 +124,6 @@ export const useAppStore = defineStore("app", () => {
   };
 
   const getDateseSobrarTempo = async () => {
-    // console.log("chamou se sobrar tempo");
     try {
       const response = await axios.get("http://localhost:3000/seSobrarTempo");
       seSobrarTempo.value = response.data;
@@ -133,11 +133,20 @@ export const useAppStore = defineStore("app", () => {
   };
 
   const registerNewactivity = async (itemOne?: string, itemTwo?: string) => {
-    // console.log(`http://localhost:3000/${typeOfRegister.value}`, "sdfsasdsd");
     const newId = Math.floor(Math.random() * 900) + 100;
+    const newType = (function () {
+      if (typeOfRegister.value === "urgentemente") {
+        return "b";
+      } else if (typeOfRegister.value === "seSobrarTempo") {
+        return "d";
+      } else if (typeOfRegister.value === "oQuantoAntes") {
+        return "c";
+      }
+    })();
     const obj = {
       text: itemTwo,
       id: newId.toString(),
+      type: newType,
     };
     try {
       await axios.post(`http://localhost:3000/${typeOfRegister.value}`, obj);
@@ -156,7 +165,6 @@ export const useAppStore = defineStore("app", () => {
     }, 3000);
   };
   const deleteItemActivitiesCheck = async (item: any) => {
-    // console.log("item4", item);
     try {
       await axios.delete(`http://localhost:3000/concluidas/${item}`);
       getActivitiesCheck();
@@ -172,33 +180,124 @@ export const useAppStore = defineStore("app", () => {
     await getDateoQuantoAntes();
     await getDateseSobrarTempo();
   };
+  const editValueInJson = async (item: any) => {
+    console.log("item do editar", item);
+    if (item.type === "b") {
+      await editarUrgentemente(item);
+    }
+    if (item.type === "c") {
+      await editaroQuantoAntes(item);
+    }
+    if (item.type === "d") {
+      await editarseSobrarTempo(item);
+    }
+  };
+  const deleteValueInJson = async (item: any) => {
+    console.log("funcao de selecionar a funcao de excluir", item);
+    if (item.type === "b") {
+      await deleteUrgentemente(item.id);
+    }
+    if (item.type === "c") {
+      await deleteoQuantoAntes(item.id);
+    }
+    if (item.type === "d") {
+      await deleteseSobrarTempo(item.id);
+    } else {
+      console.log("ERROR");
+    }
+  };
+
+  const editarUrgentemente = async (item: any) => {
+    try {
+      await axios.put(`http://localhost:3000/urgentemente/${item.id}`, item);
+      await getDateUrgentemente();
+      pagination.toGoPage();
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+  const editaroQuantoAntes = async (item: any) => {
+    try {
+      await axios.put(`http://localhost:3000/oQuantoAntes/${item.id}`, item);
+      await getDateoQuantoAntes();
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+  const editarseSobrarTempo = async (item: any) => {
+    try {
+      await axios.put(`http://localhost:3000/seSobrarTempo/${item.id}`, item);
+      await getDateseSobrarTempo();
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const deleteoQuantoAntes = async (item: any) => {
+    console.log("testando", item);
+    try {
+      await axios.delete(`http://localhost:3000/oQuantoAntes/${item}`);
+      await getDateoQuantoAntes();
+    } catch (error: any) {
+      console.log(error, "errorrrrrrr");
+    }
+  };
+  const deleteUrgentemente = async (item: any) => {
+    console.log("testando", item);
+    try {
+      await axios.delete(`http://localhost:3000/urgentemente/${item}`);
+      await getDateUrgentemente();
+    } catch (error: any) {
+      console.log(error, "errorrrrrrr");
+    }
+  };
+  const deleteseSobrarTempo = async (item: any) => {
+    console.log("testando", item);
+    try {
+      await axios.delete(`http://localhost:3000/seSobrarTempo/${item}`);
+      await getDateseSobrarTempo();
+    } catch (error: any) {
+      console.log(error, "errorrrrrrr");
+    }
+  };
+  const setTeste = (item: any) => {
+    teste.value = item.text;
+  };
   getActivitiesCheck();
   return {
-    color,
     nome,
     text,
+    teste,
+    color,
     snackbar,
     concluidas,
     urgentemente,
     dateFormated,
     oQuantoAntes,
     seSobrarTempo,
+    typeOfRegister,
     activitiesCheck,
+    setTeste,
     getAllApis,
     setSnackbar,
+    editValueInJson,
     setDateFormated,
-    typeOfRegister,
     setoQuantoAntes,
     setUrgentemente,
     setSeSobrarTempo,
-    pushOQuantoAntes,
-    pushSeSobrarTempo,
+    deleteValueInJson,
+    deleteoQuantoAntes,
+    deleteUrgentemente,
+    editarUrgentemente,
+    editaroQuantoAntes,
+    getActivitiesCheck,
+    deleteseSobrarTempo,
+    editarseSobrarTempo,
     registerNewactivity,
     getDateUrgentemente,
     getDateoQuantoAntes,
     getDateseSobrarTempo,
     pushInActivitiesCheck,
-    getActivitiesCheck,
     deleteItemActivitiesCheck,
   } as unknown as AppState;
 });

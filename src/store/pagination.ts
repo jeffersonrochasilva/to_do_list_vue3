@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
+import { useAppStore } from "./app";
 export const usePagination = defineStore("pagination", () => {
+  const appStore = useAppStore();
   const urgentemente: Ref<any> = ref([
     {
       text: "pagar a conta de luz",
@@ -47,84 +49,113 @@ export const usePagination = defineStore("pagination", () => {
   const num: Ref<number> = ref(0);
   const numPagination: Ref<number> = ref(0);
   const numb: Ref<number> = ref(4);
-  const firstGo: Ref<boolean> = ref(false);
-  const numc: Ref<number> = ref(urgentemente.value.length);
+  const firstGo: Ref<number> = ref(0);
+  // const numc: Ref<number> = ref(urgentemente.value.length);
+  const numc: Ref<number> = ref(0);
   const app: Ref<any> = ref([]);
+  const teste: Ref<any> = ref(false);
   const dataOne: Ref<any> = ref([]);
   const dataTwo: Ref<any> = ref([]);
-  // const data: Ref<any> = ref([]);
+  const data: Ref<any> = ref([]);
 
   const toGoPage = () => {
-    firstGo.value = true;
-    if (numc.value < 0) {
+    teste.value = true;
+    data.value = appStore.urgentemente;
+    if (firstGo.value === 0) {
+      numc.value = data.value.length;
+    }
+    firstGo.value++;
+    // console.log("numc", numc.value);
+
+    if (numc.value <= 0) {
       return console.log("acabou");
     }
     if (numc.value <= 4) {
-      dataOne.value = urgentemente.value.slice(
-        num.value,
-        urgentemente.value.length
-      );
+      dataOne.value = data.value.slice(num.value, data.value.length);
+      console.log("nao tem mais");
     } else {
-      dataOne.value = urgentemente.value.slice(num.value, numb.value);
+      dataOne.value = data.value.slice(num.value, numb.value);
+      console.log("ainda tem");
+      num.value = num.value + 4;
+      numb.value = numb.value + 4;
+      numc.value = numc.value - 4;
     }
-    num.value = num.value + 4;
-    // console.log("mudou aqui", num.value);
-    numb.value = numb.value + 4;
     app.value = dataOne.value;
     numPagination.value = numPagination.value + 1;
-    numc.value = numc.value - 4;
+
+    console.log("num", num.value);
+    console.log("numb", numb.value);
+    console.log("numc", numc.value);
+    console.log("prieiro acesso", firstGo.value);
+    // console.log("prieiro acesso", dataI.value);
   };
   const goBackPage = () => {
     if (numPagination.value === 1) {
       return;
     }
-    if (firstGo.value) {
+    if (firstGo.value > 0) {
       num.value = num.value - 4;
-      console.log("mudou aqui 1", num.value);
+      console.log("num", num.value);
       numb.value = numb.value - 4;
-      app.value = dataOne.value;
-      numc.value = numc.value + 4;
+      if (!teste.value) {
+        numc.value = numc.value - 4;
+      }
     }
 
     if (numPagination.value === 1) {
       return console.log("acabou");
     }
-    num.value = num.value - 4;
-    console.log("mudou aqui 2", num.value);
-    numb.value = numb.value - 4;
+    // num.value = num.value - 4;
+    console.log("num", num.value);
+    // numb.value = numb.value - 4;
     app.value = dataOne.value;
-    numc.value = numc.value + 4;
+    // numc.value = numc.value - 4;
 
     numPagination.value = numPagination.value - 1;
 
-    if (numc.value <= 4) {
-      dataOne.value = urgentemente.value.slice(
+    if (teste.value) {
+      console.log("caiu aqui", numc.value);
+      dataOne.value = appStore.urgentemente.slice(
         num.value,
-        urgentemente.value.length
+        appStore.urgentemente.length - numc.value
       );
-    } else {
-      dataOne.value = urgentemente.value.slice(num.value, numb.value);
+      console.log("urgentemente.length", appStore.urgentemente.length);
       app.value = dataOne.value;
+      numc.value = 0;
+    } else {
+      dataOne.value = appStore.urgentemente.slice(num.value, numb.value);
+      app.value = dataOne.value;
+      console.log("caius aqui agora");
     }
-    firstGo.value = false;
+    firstGo.value--;
     if (numPagination.value == 1) {
-      num.value = 4;
-      numb.value = 8;
-      numc.value = urgentemente.value.length;
+      setValuePage();
     }
+    teste.value = false;
+    console.log("num", num.value);
+    console.log("numb", numb.value);
+    console.log("numc", numc.value);
+    console.log("prieiro acesso", firstGo.value);
   };
-  toGoPage();
+  const setValuePage = () => {
+    num.value = 4;
+    numb.value = 8;
+    numc.value = appStore.urgentemente.length;
+  };
   return {
     i,
     num,
     app,
     numb,
     numc,
+    teste,
+    data,
     dataTwo,
     firstGo,
     dataOne,
     urgentemente,
     numPagination,
+    setValuePage,
     goBackPage,
     toGoPage,
   };

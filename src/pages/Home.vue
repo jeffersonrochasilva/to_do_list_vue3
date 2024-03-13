@@ -80,9 +80,13 @@ const valueSnackbar: ComputedRef<boolean> = computed(() => {
 }
 .content {
   width: 100%;
+  /* padding-top: 164px; */
+  /* background: red;   */
 }
 .container {
   width: 100%;
+  padding-top: 64px;
+
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

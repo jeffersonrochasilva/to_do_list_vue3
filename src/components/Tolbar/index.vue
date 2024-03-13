@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar color="primary">
+  <v-toolbar class="fixed-card" color="primary">
     <div class="icon">
       <v-btn color="accent">
         <template v-slot:prepend>
@@ -52,6 +52,10 @@ const goToRoute = (item: string) => {
 };
 </script>
 <style lang="scss" scoped>
+.fixed-card {
+  position: fixed;
+  z-index: 99;
+}
 .icon {
   margin-bottom: 5px;
 }

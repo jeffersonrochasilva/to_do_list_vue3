@@ -1,98 +1,180 @@
 {
   "concluidas": [
     {
+      "type": "a",
       "text": "pagar a conta de luz",
-      "id": "1"
+      "id": "40"
     },
     {
-      "id": "20",
-      "text": "ir ao mercado"
+      "type": "a",
+      "id": "859",
+      "text": "testando"
     },
     {
-      "id": "30",
-      "text": "visitar os amigos"
-    },
-    {
-      "id": "40",
-      "text": "dfgfhgfhdfghdfghd"
+      "type": "a",
+      "id": "753",
+      "text": "teste 2"
     }
   ],
   "urgentemente": [
     {
-      "text": "pagar a conta de luz",
-      "id": "1"
+      "type": "b",
+      "id": "157",
+      "text": "teste 1"
     },
     {
-      "text": "fazer compras",
-      "id": "2"
+      "type": "b",
+      "id": "166",
+      "text": "teste 2"
     },
     {
-      "text": "pagar a conta de gaz",
-      "id": "3"
+      "id": "858",
+      "text": "teste 3",
+      "type": "b"
     },
     {
-      "id": "4",
-      "text": "ir ao mercado"
+      "id": "681",
+      "text": "teste 4",
+      "type": "b"
     },
     {
-      "id": "40",
-      "text": "lavar o short"
+      "id": "631",
+      "text": "teste 5",
+      "type": "b"
     },
     {
-      "id": "895",
-      "text": "varrer a casa"
+      "id": "265",
+      "text": "teste 6",
+      "type": "b"
+    },
+    {
+      "id": "451",
+      "text": "teste 7",
+      "type": "b"
+    },
+    {
+      "id": "122",
+      "text": "teste 8",
+      "type": "b"
+    },
+    {
+      "id": "359",
+      "text": "teste 9",
+      "type": "b"
+    },
+    {
+      "id": "356",
+      "text": "teste 10",
+      "type": "b"
+    },
+    {
+      "id": "132",
+      "text": "teste 11",
+      "type": "b"
+    },
+    {
+      "id": "954",
+      "text": "teste 12",
+      "type": "b"
+    },
+    {
+      "id": "349",
+      "text": "teste 13",
+      "type": "b"
+    },
+    {
+      "id": "916",
+      "text": "teste 14",
+      "type": "b"
+    },
+    {
+      "id": "684",
+      "text": "teste 15",
+      "type": "b"
     }
   ],
   "oQuantoAntes": [
     {
+      "type": "c",
       "text": "ir ao mercado",
       "id": "1"
     },
     {
+      "type": "c",
       "text": "cortar o cabelo",
       "id": "2"
     },
     {
+      "type": "c",
       "text": "fazer as unhas",
       "id": "3"
     },
     {
       "id": "173",
+      "type": "c",
       "text": "fazer as unhas"
+    },
+    {
+      "text": "testando",
+      "id": "4",
+      "type": "c"
+    },
+    {
+      "text": "testando",
+      "id": "7",
+      "type": "c"
+    },
+    {
+      "type": "c",
+      "text": "fazer as unhas",
+      "id": "5"
+    },
+    {
+      "id": "951",
+      "text": "testando 5",
+      "type": "c"
     }
   ],
   "seSobrarTempo": [
     {
-      "text": "visitar os amigos",
-      "id": "1"
+      "text": "testando",
+      "id": "1",
+      "type": "d"
     },
     {
+      "type": "d",
       "text": "ir ao bar",
       "id": "2"
     },
     {
+      "type": "d",
       "text": "comprar roupas",
       "id": "3"
     },
     {
       "id": "50",
+      "type": "d",
       "text": "se dobrar tempo"
     },
     {
       "id": "51",
+      "type": "d",
       "text": "testando se sobrarr tempo"
     },
     {
       "id": "50",
+      "type": "d",
       "text": "testando mais uma vez"
     },
     {
       "id": "525",
+      "type": "d",
       "text": "testando o jsoon"
     },
     {
+      "text": "testando",
       "id": "924",
-      "text": "fdsfdsfd"
+      "type": "d"
     }
   ]
 }

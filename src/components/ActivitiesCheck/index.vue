@@ -13,7 +13,7 @@
             @click="appStore.deleteItemActivitiesCheck(item.id)"
             class="material-symbols-outlined"
           >
-            check
+            delete
           </span>
         </div>
       </v-card>

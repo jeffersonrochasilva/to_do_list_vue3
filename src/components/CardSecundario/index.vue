@@ -5,6 +5,16 @@
     </div>
     <div class="iconBox">
       <span
+        id="icod"
+        class="material-symbols-outlined"
+        @click="appStore.deleteUrgentemente(item.id)"
+      >
+        delete
+      </span>
+      <span id="ico" class="material-symbols-outlined" @click="editDate(item)">
+        edit
+      </span>
+      <span
         id="icon"
         @click="appStore.pushInActivitiesCheck(item)"
         class="material-symbols-outlined"
@@ -23,6 +33,17 @@ defineProps<{
   setData?: Function;
   item?: any;
 }>();
+
+const editDate = (item: any) => {
+  console.log("testando mais uma", item);
+  const obj = {
+    text: item.text,
+    id: item.id,
+    type: item.type,
+  };
+  // appStore.editValueInJson(obj);
+  appStore.setTeste(obj);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -30,7 +51,6 @@ defineProps<{
   width: 100%;
   margin: 5px 0;
   height: 40px;
-  /* border: 1px solid blue; */
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -45,11 +65,17 @@ defineProps<{
 .iconBox {
   width: 50%;
   display: flex;
-  align-items: flex-end;
+  justify-content: flex-end;
 }
 #icon {
-  margin-left: 90%;
-
-  color: blue;
+  color: greenyellow;
+  margin-left: 15px;
+}
+#ico {
+  color: orange;
+  margin-left: 15px;
+}
+#icod {
+  color: orangered;
 }
 </style>

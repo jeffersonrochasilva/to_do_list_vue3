@@ -1,14 +1,11 @@
 <template>
   <div>
-    <CardFirst
-      title="O quanto antes"
-      :data="appStore.oQuantoAntes"
-      :setData="setDataTwo"
-    />
+    <CardFirst title="O quanto antes" :data="appStore.oQuantoAntes" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import CardFirst from "../../components/CardFirst/index.vue";
 import { useAppStore } from "../../store/app";
 import { usePagination } from "@/store/pagination";
@@ -20,4 +17,12 @@ const setDataTwo = (item: any) => {
   appStore.pushInActivitiesCheck(item);
   appStore.setSnackbar("Parabéns, atividade concluida", "success");
 };
+onMounted(async () => {
+  pagination.setValuePage();
+
+  await appStore.getAllApis();
+  pagination.data = appStore.oQuantoAntes;
+
+  pagination.toGoPage();
+});
 </script>

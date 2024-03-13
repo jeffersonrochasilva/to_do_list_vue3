@@ -1,6 +1,7 @@
 <template>
   <div class="navbar">
     <div>
+      <!-- <h1>teste</h1> -->
       <v-list-item v-for="item in items" :key="item.title" link>
         <div class="teste" @click="toGORoute(item.route)">
           <div class="boxIcon">
@@ -47,6 +48,8 @@ const toGORoute = (item: string) => {
   height: calc(100vh - 64px);
   width: 250px;
   border-right: 1px solid gray;
+  position: fixed;
+  top: 64px;
 }
 @media (max-width: 769px) {
   .navbar {
