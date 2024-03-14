@@ -17,11 +17,12 @@ export const usePagination = defineStore("pagination", () => {
   const data: Ref<any> = ref([]);
 
   const toGoPage = () => {
-    if (numb.value > appStore.urgentemente.length) {
+    console.log("go to page", data.value);
+    if (numb.value > data.value.length) {
       return console.log("Não existe mais dados");
     }
-    if (appStore.urgentemente.length < 4) {
-      numb.value = appStore.urgentemente.length;
+    if (data.value.length < 4) {
+      numb.value = data.value.length;
     } else {
       numPagination.value === 0 ? (numb.value = 4) : null;
     }
@@ -29,7 +30,7 @@ export const usePagination = defineStore("pagination", () => {
       num.value = num.value + 4;
       numb.value = numb.value + 4;
     }
-    app.value = appStore.urgentemente.slice(num.value, numb.value);
+    app.value = data.value.slice(num.value, numb.value);
     numPagination.value += 1;
   };
   const goBackPage = () => {
@@ -39,14 +40,14 @@ export const usePagination = defineStore("pagination", () => {
       num.value = num.value - 4;
       numb.value = numb.value - 4;
       numPagination.value--;
-      app.value = appStore.urgentemente.slice(num.value, numb.value);
+      app.value = data.value.slice(num.value, numb.value);
     }
     teste.value = false;
   };
   const setValuePage = () => {
-    num.value = 4;
-    numb.value = 8;
-    numc.value = appStore.urgentemente.length;
+    num.value = 0;
+    numb.value = 4;
+    numPagination.value = 1;
   };
   return {
     i,

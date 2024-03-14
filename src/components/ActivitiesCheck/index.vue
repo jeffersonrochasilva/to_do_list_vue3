@@ -3,7 +3,12 @@
     <span class="title">atividades concluidas</span>
 
     <div>
-      <v-card color="success" class="tesk" v-for="item in data" :key="item.id">
+      <v-card
+        color="success"
+        class="tesk"
+        v-for="item in pagination.app"
+        :key="item.id"
+      >
         <div class="item">
           <span>{{ item.text }}</span>
         </div>
@@ -17,17 +22,28 @@
           </span>
         </div>
       </v-card>
+      <div class="contentFooter">
+        <Footer />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Footer from "../Footer/index.vue";
 import { useAppStore } from "../../store/app";
-import { computed } from "vue";
-
+import { usePagination } from "@/store/pagination";
+import { computed, onMounted } from "vue";
+const pagination = usePagination();
 const appStore = useAppStore();
 const data = computed(() => {
   return appStore.concluidas;
+});
+onMounted(async () => {
+  await appStore.getAllApis();
+  pagination.data = appStore.concluidas;
+  console.log(appStore.urgentemente, "testando");
+  pagination.toGoPage();
 });
 </script>
 
@@ -39,6 +55,12 @@ const data = computed(() => {
   padding: 20px;
   border-radius: 4px;
   max-height: 300px;
+}
+.contentFooter {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
 }
 .title {
   color: black;

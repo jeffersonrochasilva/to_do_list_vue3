@@ -114,7 +114,7 @@ watch(model, () => {
   flex-wrap: wrap;
 }
 .btn {
-  background: black;
+  background: #1966c0;
   height: 55px;
   color: white;
 }

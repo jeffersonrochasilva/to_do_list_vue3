@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- <CardFirst title="Se sobrar tempo" :data="pagination.app" /> -->
-    <CardFirst title="Se sobrar tempo" :data="appStore.seSobrarTempo" />
+    <CardFirst title="Se sobrar tempo" :data="pagination.app" />
+    <!-- <CardFirst title="Se sobrar tempo" :data="appStore.seSobrarTempo" /> -->
   </div>
 </template>
 
@@ -21,7 +21,6 @@ const setDataThree = (item: any) => {
 
 onMounted(async () => {
   pagination.setValuePage();
-
   await appStore.getAllApis();
   pagination.data = appStore.seSobrarTempo;
   pagination.toGoPage();

@@ -105,19 +105,19 @@
       "id": "3"
     },
     {
-      "id": "173",
       "type": "c",
-      "text": "fazer as unhas"
+      "text": "fazer as unhas",
+      "id": "173"
     },
     {
+      "type": "c",
       "text": "testando",
-      "id": "4",
-      "type": "c"
+      "id": "4"
     },
     {
+      "type": "c",
       "text": "testando",
-      "id": "7",
-      "type": "c"
+      "id": "7"
     },
     {
       "type": "c",
@@ -125,9 +125,9 @@
       "id": "5"
     },
     {
-      "id": "951",
+      "type": "c",
       "text": "testando 5",
-      "type": "c"
+      "id": "951"
     }
   ],
   "seSobrarTempo": [

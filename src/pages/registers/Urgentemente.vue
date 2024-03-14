@@ -20,7 +20,7 @@ onMounted(async () => {
   // pagination.setValuePage();
 
   await appStore.getAllApis();
-  // pagination.data = appStore.urgentemente;
+  pagination.data = appStore.urgentemente;
   console.log(appStore.urgentemente, "testando");
   pagination.toGoPage();
 });
