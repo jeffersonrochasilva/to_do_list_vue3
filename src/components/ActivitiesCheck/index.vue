@@ -42,7 +42,6 @@ const data = computed(() => {
 onMounted(async () => {
   await appStore.getAllApis();
   pagination.data = appStore.concluidas;
-  console.log(appStore.urgentemente, "testando");
   pagination.toGoPage();
 });
 </script>

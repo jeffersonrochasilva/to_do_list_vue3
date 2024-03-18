@@ -46,6 +46,11 @@ const items: Ref<any> = ref([
     icon: "mdi-check",
     route: "/activitiescheck",
   },
+  {
+    title: "Sair",
+    icon: "mdi-logout",
+    route: "/",
+  },
 ]);
 const goToRoute = (item: string) => {
   router.push(item);
@@ -54,7 +59,7 @@ const goToRoute = (item: string) => {
 <style lang="scss" scoped>
 .fixed-card {
   position: fixed;
-  z-index: 99;
+  z-index: 98;
 }
 .icon {
   margin-bottom: 5px;

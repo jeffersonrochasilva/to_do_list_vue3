@@ -35,13 +35,12 @@ defineProps<{
 }>();
 
 const editDate = (item: any) => {
-  console.log("testando mais uma", item);
   const obj = {
     text: item.text,
     id: item.id,
     type: item.type,
   };
-  // appStore.editValueInJson(obj);
+  appStore.stepEdit = true;
   appStore.setTeste(obj);
 };
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div class="navbar">
     <div>
-      <!-- <h1>teste</h1> -->
       <v-list-item v-for="item in items" :key="item.title" link>
         <div class="teste" @click="toGORoute(item.route)">
           <div class="boxIcon">
@@ -18,11 +17,13 @@
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from "@/store/app";
 import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
+const appStore = useAppStore();
 const items: Ref<any> = ref([
-  { title: "Urgentemente", icon: "mdi-clock-outline", route: "/" },
+  { title: "Urgentemente", icon: "mdi-clock-outline", route: "/home" },
   {
     title: "O quanto antes",
     icon: "mdi-clock-outline",
@@ -38,9 +39,18 @@ const items: Ref<any> = ref([
     icon: "mdi-check",
     route: "/activitiescheck",
   },
+  {
+    title: "Sair",
+    icon: "mdi-logout",
+    route: "/",
+  },
 ]);
 const toGORoute = (item: string) => {
-  router.push(item);
+  appStore.stepCircle = true;
+  setTimeout(() => {
+    appStore.stepCircle = false;
+    router.push(item);
+  }, 1000);
 };
 </script>
 <style lang="scss" scoped>
@@ -62,7 +72,6 @@ const toGORoute = (item: string) => {
   background: #1966c0;
   padding: 15px;
   align-items: center;
-  /* margin-bottom: 40px; */
 }
 .teste {
   display: flex;

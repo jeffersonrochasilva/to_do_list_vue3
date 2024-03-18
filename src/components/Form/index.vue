@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <div class="header">
     <div class="campBox">
@@ -10,7 +11,9 @@
           :counter="10"
         />
       </div>
-      <v-btn class="btn" @click="addActivity()">Adicionar</v-btn>
+      <v-btn class="btn" @click="postSetActivit()">{{
+        appStopre.stepEdit ? "editar" : "Adicionar"
+      }}</v-btn>
     </div>
 
     <div class="campSwitch">
@@ -51,33 +54,73 @@
 <script lang="ts" setup>
 import { Ref, ref, watch } from "vue";
 import { useAppStore } from "../../store/app";
-
+import axios from "axios";
 const appStopre = useAppStore();
 
 const activity: Ref<string> = ref(``);
 const model: Ref<string> = ref(``);
 
 const addActivity = () => {
-  if (!appStopre.teste) {
-    return appStopre.setSnackbar("Preencha o campo com sua atividade", "error");
-  }
-  if (!model.value) {
-    return appStopre.setSnackbar(
-      "Escolha a importancia da sua atividade",
-      "warning"
-    );
-  }
-  // appStopre.registerNewactivity(model.value, activity.value);
-  appStopre.registerNewactivity(model.value, appStopre.teste);
+  appStopre.stepCircle = true;
+  setTimeout(() => {
+    appStopre.stepCircle = false;
+    if (!appStopre.teste) {
+      return appStopre.setSnackbar(
+        "Preencha o campo com sua atividade",
+        "warning"
+      );
+    }
+    if (!model.value) {
+      return appStopre.setSnackbar(
+        "Escolha a importancia da sua atividade",
+        "warning"
+      );
+    }
+    // appStopre.registerNewactivity(model.value, activity.value);
+    appStopre.registerNewactivity(model.value, appStopre.teste);
 
-  appStopre.teste = "";
-  model.value = "";
-  return appStopre.setSnackbar("Atividade cadastrada com sucesso", "success");
+    appStopre.teste = "";
+    model.value = "";
+    return appStopre.setSnackbar("Atividade cadastrada com sucesso", "success");
+  }, 1000);
+};
+const aditeActivite = async () => {
+  appStopre.stepCircle = true;
+  let types = "";
+  if (model.value === "urgentemente") {
+    types = "b";
+  }
+  if (model.value === "oQuantoAntes") {
+    types = "c";
+  }
+  if (model.value === "seSobrarTempo") {
+    types = "d";
+  }
+  const obj = {
+    type: types,
+    id: (Math.floor(Math.random() * 900) + 100).toString(),
+    text: appStopre.teste,
+  };
+  setTimeout(async () => {
+    appStopre.stepCircle = false;
+    try {
+      await axios.delete(
+        `http://localhost:3000/${model.value}/${appStopre.idEdite}`
+      );
+
+      await axios.post(`http://localhost:3000/${model.value}`, obj);
+      appStopre.getAllApis();
+    } catch (err: any) {
+      console.log(err);
+    }
+  }, 1000);
+};
+const postSetActivit = () => {
+  appStopre.stepEdit ? aditeActivite() : addActivity();
 };
 
 watch(model, () => {
   appStopre.typeOfRegister = model.value;
-  console.log("chamou", appStopre.typeOfRegister);
 });
 </script>
 

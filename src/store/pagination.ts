@@ -17,9 +17,8 @@ export const usePagination = defineStore("pagination", () => {
   const data: Ref<any> = ref([]);
 
   const toGoPage = () => {
-    console.log("go to page", data.value);
     if (numb.value > data.value.length) {
-      return console.log("Não existe mais dados");
+      return;
     }
     if (data.value.length < 4) {
       numb.value = data.value.length;

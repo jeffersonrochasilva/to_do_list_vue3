@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
 import axios from "axios";
+import { HTTP } from "../http.ts";
 import { usePagination } from "./pagination";
 // Interface para representar um item de tarefa
 interface TaskItem {
@@ -19,9 +20,14 @@ interface AppState {
   text: Ref<string>;
   color: Ref<string>;
   setTeste: Ref<any>;
+  idEdite: Ref<string>;
   getAllApis: Ref<any>;
   setSnackbar: Ref<any>;
+  stepForm: Ref<boolean>;
+  stepEdit: Ref<boolean>;
   snackbar: Ref<boolean>;
+  typeEdite: Ref<string>;
+  stepCircle: Ref<boolean>;
   setDateFormated: Ref<any>;
   editValueInJson: Ref<any>;
   setUrgentemente: Ref<any>;
@@ -60,6 +66,11 @@ export const useAppStore = defineStore("app", () => {
   const seSobrarTempo: Ref<TaskItem[]> = ref([]);
   const concluidas: Ref<TaskItem[]> = ref([]);
   const dateFormated: Ref<TaskItem[]> = ref([]);
+  const stepForm: Ref<boolean> = ref(true);
+  const stepCircle: Ref<boolean> = ref(false);
+  const stepEdit: Ref<boolean> = ref(false);
+  const idEdite: Ref<string> = ref("");
+  const typeEdite: Ref<string> = ref("");
 
   const activitiesCheck = ref([{ name: "colocar o lixa pra fora" }]);
   const color: Ref<string> = ref("");
@@ -85,10 +96,9 @@ export const useAppStore = defineStore("app", () => {
       type: item.type,
       id: (Math.floor(Math.random() * 900) + 100).toString(),
     };
-    console.log("item do inicio", item);
-    console.log("objeto do inicio", obj);
+
     try {
-      await axios.post("http://localhost:3000/concluidas", obj);
+      await axios.post(`${HTTP.development}concluidas`, obj);
       await deleteValueInJson(item);
       getAllApis();
     } catch (error: any) {
@@ -98,7 +108,7 @@ export const useAppStore = defineStore("app", () => {
 
   const getDateUrgentemente = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/urgentemente");
+      const response = await axios.get(`${HTTP.development}urgentemente`);
       urgentemente.value = response.data;
     } catch (error) {
       console.log(error, "error");
@@ -107,7 +117,7 @@ export const useAppStore = defineStore("app", () => {
 
   const getDateoQuantoAntes = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/oQuantoAntes");
+      const response = await axios.get(`${HTTP.development}oQuantoAntes`);
       oQuantoAntes.value = response.data;
     } catch (error) {
       console.log(error, "error");
@@ -116,7 +126,7 @@ export const useAppStore = defineStore("app", () => {
 
   const getActivitiesCheck = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/concluidas");
+      const response = await axios.get(`${HTTP.development}concluidas`);
       concluidas.value = response.data;
     } catch (e: any) {
       console.log(e, "error");
@@ -125,7 +135,7 @@ export const useAppStore = defineStore("app", () => {
 
   const getDateseSobrarTempo = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/seSobrarTempo");
+      const response = await axios.get(`${HTTP.development}seSobrarTempo`);
       seSobrarTempo.value = response.data;
     } catch (error) {
       console.log(error, "error");
@@ -149,7 +159,7 @@ export const useAppStore = defineStore("app", () => {
       type: newType,
     };
     try {
-      await axios.post(`http://localhost:3000/${typeOfRegister.value}`, obj);
+      await axios.post(`${HTTP.development}${typeOfRegister.value}`, obj);
       getAllApis();
     } catch (e) {
       console.log("error", e);
@@ -166,7 +176,7 @@ export const useAppStore = defineStore("app", () => {
   };
   const deleteItemActivitiesCheck = async (item: any) => {
     try {
-      await axios.delete(`http://localhost:3000/concluidas/${item}`);
+      await axios.delete(`${HTTP.development}concluidas/${item}`);
       getActivitiesCheck();
     } catch (error: any) {
       console.log("ërror", error);
@@ -176,12 +186,15 @@ export const useAppStore = defineStore("app", () => {
     console.log("testando mais uma ves");
   };
   const getAllApis = async () => {
-    await getDateUrgentemente();
-    await getDateoQuantoAntes();
-    await getDateseSobrarTempo();
+    try {
+      await getDateUrgentemente();
+      await getDateoQuantoAntes();
+      await getDateseSobrarTempo();
+    } catch (err: any) {
+      console.log(err);
+    }
   };
   const editValueInJson = async (item: any) => {
-    console.log("item do editar", item);
     if (item.type === "b") {
       await editarUrgentemente(item);
     }
@@ -193,7 +206,6 @@ export const useAppStore = defineStore("app", () => {
     }
   };
   const deleteValueInJson = async (item: any) => {
-    console.log("funcao de selecionar a funcao de excluir", item);
     if (item.type === "b") {
       await deleteUrgentemente(item.id);
     }
@@ -209,7 +221,7 @@ export const useAppStore = defineStore("app", () => {
 
   const editarUrgentemente = async (item: any) => {
     try {
-      await axios.put(`http://localhost:3000/urgentemente/${item.id}`, item);
+      await axios.put(`${HTTP.development}urgentemente/${item.id}`, item);
       await getDateUrgentemente();
       pagination.toGoPage();
     } catch (error: any) {
@@ -218,7 +230,7 @@ export const useAppStore = defineStore("app", () => {
   };
   const editaroQuantoAntes = async (item: any) => {
     try {
-      await axios.put(`http://localhost:3000/oQuantoAntes/${item.id}`, item);
+      await axios.put(`${HTTP.development}oQuantoAntes/${item.id}`, item);
       await getDateoQuantoAntes();
     } catch (error: any) {
       console.log(error);
@@ -226,7 +238,7 @@ export const useAppStore = defineStore("app", () => {
   };
   const editarseSobrarTempo = async (item: any) => {
     try {
-      await axios.put(`http://localhost:3000/seSobrarTempo/${item.id}`, item);
+      await axios.put(`${HTTP.development}seSobrarTempo/${item.id}`, item);
       await getDateseSobrarTempo();
     } catch (error: any) {
       console.log(error);
@@ -234,27 +246,24 @@ export const useAppStore = defineStore("app", () => {
   };
 
   const deleteoQuantoAntes = async (item: any) => {
-    console.log("testando", item);
     try {
-      await axios.delete(`http://localhost:3000/oQuantoAntes/${item}`);
+      await axios.delete(`${HTTP.development}oQuantoAntes/${item}`);
       await getDateoQuantoAntes();
     } catch (error: any) {
       console.log(error, "errorrrrrrr");
     }
   };
   const deleteUrgentemente = async (item: any) => {
-    console.log("testando", item);
     try {
-      await axios.delete(`http://localhost:3000/urgentemente/${item}`);
+      await axios.delete(`${HTTP.development}urgentemente/${item}`);
       await getDateUrgentemente();
     } catch (error: any) {
       console.log(error, "errorrrrrrr");
     }
   };
   const deleteseSobrarTempo = async (item: any) => {
-    console.log("testando", item);
     try {
-      await axios.delete(`http://localhost:3000/seSobrarTempo/${item}`);
+      await axios.delete(`${HTTP.development}seSobrarTempo/${item}`);
       await getDateseSobrarTempo();
     } catch (error: any) {
       console.log(error, "errorrrrrrr");
@@ -262,6 +271,8 @@ export const useAppStore = defineStore("app", () => {
   };
   const setTeste = (item: any) => {
     teste.value = item.text;
+    idEdite.value = item.id;
+    typeEdite.value = item.type;
   };
   getActivitiesCheck();
   return {
@@ -269,7 +280,12 @@ export const useAppStore = defineStore("app", () => {
     text,
     teste,
     color,
+    idEdite,
     snackbar,
+    stepForm,
+    stepEdit,
+    typeEdite,
+    stepCircle,
     concluidas,
     urgentemente,
     dateFormated,

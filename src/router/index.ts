@@ -4,9 +4,11 @@ import OQuantoAntes from "@/pages/registers/OQuantoAntes.vue";
 import SeSobrarTempo from "@/pages/registers/SeSobrarTempo.vue";
 import Urgentemente from "@/pages/registers/Urgentemente.vue";
 import ActivitiesCheck from "@/pages/ActivitiesCheck.vue";
+import Login from "../pages/Login.vue";
 const routes = [
+  { path: "/", name: "Login", component: Login },
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: () => import(/* webpackChunkName: "home" */ "@/pages/Home.vue"),
     children: [
