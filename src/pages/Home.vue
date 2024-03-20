@@ -29,14 +29,14 @@
 import Form from "../components/Form/index.vue";
 import Navigationbarr from "../components/NavigationBar/index.vue";
 import Tolbar from "../components/Tolbar/index.vue";
-import { onMounted } from "vue";
-import { useAppStore } from "../store/app";
+// import { onMounted } from "vue";
+// import { useAppStore } from "../store/app";
 
-const appStore = useAppStore();
+// const appStore = useAppStore();
 
-onMounted(async () => {
-  await appStore.getAllApis();
-});
+// onMounted(async () => {
+//   await appStore.getAllApis();
+// });
 </script>
 
 <style lang="scss" scoped>

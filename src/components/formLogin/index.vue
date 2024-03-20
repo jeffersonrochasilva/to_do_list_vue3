@@ -77,7 +77,7 @@ const checkUser = () => {
       router.push("/home");
       appStore.setSnackbar("Parabéns, você está logado", "warning");
     } else {
-      appStore.setSnackbar("E-mail ou senha invalido", "warning");
+      appStore.setSnackbar("E-mail ou senha invalido", "success");
     }
   }, 1000);
 };

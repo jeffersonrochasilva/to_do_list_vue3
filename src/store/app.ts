@@ -28,7 +28,6 @@ interface AppState {
   snackbar: Ref<boolean>;
   typeEdite: Ref<string>;
   stepCircle: Ref<boolean>;
-  setDateFormated: Ref<any>;
   editValueInJson: Ref<any>;
   setUrgentemente: Ref<any>;
   setoQuantoAntes: Ref<any>;
@@ -128,8 +127,8 @@ export const useAppStore = defineStore("app", () => {
     try {
       const response = await axios.get(`${HTTP.development}concluidas`);
       concluidas.value = response.data;
-    } catch (e: any) {
-      console.log(e, "error");
+    } catch (error: any) {
+      console.log(error, "error");
     }
   };
 
@@ -161,8 +160,8 @@ export const useAppStore = defineStore("app", () => {
     try {
       await axios.post(`${HTTP.development}${typeOfRegister.value}`, obj);
       getAllApis();
-    } catch (e) {
-      console.log("error", e);
+    } catch (error) {
+      console.log(error, "error");
     }
   };
 
@@ -179,19 +178,19 @@ export const useAppStore = defineStore("app", () => {
       await axios.delete(`${HTTP.development}concluidas/${item}`);
       getActivitiesCheck();
     } catch (error: any) {
-      console.log("ërror", error);
+      console.log(error, "error");
     }
   };
-  const setDateFormated = (array: any) => {
-    console.log("testando mais uma ves");
-  };
+
   const getAllApis = async () => {
+    console.log("camou o get all apis");
+
     try {
       await getDateUrgentemente();
       await getDateoQuantoAntes();
       await getDateseSobrarTempo();
-    } catch (err: any) {
-      console.log(err);
+    } catch (error: any) {
+      console.log(error, "error");
     }
   };
   const editValueInJson = async (item: any) => {
@@ -297,7 +296,6 @@ export const useAppStore = defineStore("app", () => {
     getAllApis,
     setSnackbar,
     editValueInJson,
-    setDateFormated,
     setoQuantoAntes,
     setUrgentemente,
     setSeSobrarTempo,

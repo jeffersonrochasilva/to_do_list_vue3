@@ -17,6 +17,5 @@ onMounted(async () => {
   await appStore.getAllApis();
   pagination.data = appStore.oQuantoAntes;
   pagination.toGoPage();
-  console.log("carregou o quanto antes");
 });
 </script>

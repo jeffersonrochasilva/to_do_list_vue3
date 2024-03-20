@@ -110,8 +110,8 @@ const aditeActivite = async () => {
 
       await axios.post(`http://localhost:3000/${model.value}`, obj);
       appStopre.getAllApis();
-    } catch (err: any) {
-      console.log(err);
+    } catch (error: any) {
+      console.log(error, "error");
     }
   }, 1000);
 };

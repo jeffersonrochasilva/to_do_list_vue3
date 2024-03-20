@@ -15,9 +15,11 @@ export const usePagination = defineStore("pagination", () => {
   const dataOne: Ref<any> = ref([]);
   const dataTwo: Ref<any> = ref([]);
   const data: Ref<any> = ref([]);
+  const firstAccess: Ref<boolean> = ref(true);
 
   const toGoPage = () => {
-    if (numb.value > data.value.length) {
+    console.log("camou o go to");
+    if (numb.value >= data.value.length) {
       return;
     }
     if (data.value.length < 4) {
@@ -30,11 +32,18 @@ export const usePagination = defineStore("pagination", () => {
       numb.value = numb.value + 4;
     }
     app.value = data.value.slice(num.value, numb.value);
-    numPagination.value += 1;
+    // if (firstAccess.value) {
+    //   firstAccess.value = false;
+    //   return;
+    // }
+    numPagination.value++;
   };
+
   const goBackPage = () => {
+    console.log("camou o back page");
+
     if (numPagination.value === 1) {
-      return console.log("Está na pagina 1");
+      return;
     } else {
       num.value = num.value - 4;
       numb.value = numb.value - 4;
@@ -43,11 +52,13 @@ export const usePagination = defineStore("pagination", () => {
     }
     teste.value = false;
   };
+
   const setValuePage = () => {
-    num.value = 0;
-    numb.value = 4;
-    numPagination.value = 1;
+    // numb.value = 0;
+    // numPagination.value = 1;
+    // num.value = 0;
   };
+
   return {
     i,
     num,
@@ -59,6 +70,7 @@ export const usePagination = defineStore("pagination", () => {
     dataTwo,
     firstGo,
     dataOne,
+    firstAccess,
     numPagination,
     setValuePage,
     goBackPage,

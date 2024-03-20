@@ -18,17 +18,17 @@ const routes = [
         component: Urgentemente,
       },
       {
-        path: "oquantoantes",
+        path: "/oquantoantes",
         name: "OQuantoAntes",
         component: OQuantoAntes,
       },
       {
-        path: "sesobrartempo",
+        path: "/sesobrartempo",
         name: "SeSobrarTempo",
         component: SeSobrarTempo,
       },
       {
-        path: "activitiescheck",
+        path: "/activitiescheck",
         name: "ActivitiesCheck",
         component: ActivitiesCheck,
       },
