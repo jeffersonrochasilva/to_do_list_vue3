@@ -29,14 +29,22 @@
 import Form from "../components/Form/index.vue";
 import Navigationbarr from "../components/NavigationBar/index.vue";
 import Tolbar from "../components/Tolbar/index.vue";
-// import { onMounted } from "vue";
-// import { useAppStore } from "../store/app";
-
-// const appStore = useAppStore();
+import { onMounted } from "vue";
+import { useAppStore } from "../store/app";
+import { usePagination } from "@/store/pagination";
+const appStore = useAppStore();
+const pagination = usePagination();
 
 // onMounted(async () => {
 //   await appStore.getAllApis();
 // });
+
+onMounted(async () => {
+  pagination.setValuePage();
+  await appStore.getAllApis();
+  pagination.data = appStore.oQuantoAntes;
+  pagination.toGoPage();
+});
 </script>
 
 <style lang="scss" scoped>
