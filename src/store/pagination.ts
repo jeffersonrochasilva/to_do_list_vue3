@@ -54,9 +54,9 @@ export const usePagination = defineStore("pagination", () => {
   };
 
   const setValuePage = () => {
-    // numb.value = 0;
-    // numPagination.value = 1;
-    // num.value = 0;
+    numb.value = 0;
+    numPagination.value = 0;
+    num.value = 0;
   };
 
   return {

@@ -33,16 +33,19 @@
 import Footer from "../Footer/index.vue";
 import { useAppStore } from "../../store/app";
 import { usePagination } from "@/store/pagination";
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
 const pagination = usePagination();
 const appStore = useAppStore();
-const data = computed(() => {
-  return appStore.concluidas;
-});
+
 onMounted(async () => {
   await appStore.getAllApis();
-  pagination.data = appStore.concluidas;
-  pagination.toGoPage();
+  appStore.stepCircle = true;
+  setTimeout(() => {
+    console.log("chamou concluidas");
+    pagination.data = appStore.concluidas;
+    pagination.toGoPage();
+    appStore.stepCircle = false;
+  }, 300);
 });
 </script>
 
@@ -69,6 +72,7 @@ onMounted(async () => {
 .tesk {
   border-radius: 4px;
   padding: 7px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;

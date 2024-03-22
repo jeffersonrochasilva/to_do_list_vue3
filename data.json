@@ -2,18 +2,30 @@
   "concluidas": [
     {
       "type": "a",
-      "text": "pagar a conta de luz",
+      "text": "concluidas 1",
       "id": "40"
     },
     {
       "type": "a",
       "id": "859",
-      "text": "testando"
+      "text": "concluidas 2"
     },
     {
       "type": "a",
       "id": "753",
-      "text": "teste 2"
+      "text": "concluidas 3"
+    }
+    ,
+    {
+      "type": "a",
+      "id": "754",
+      "text": "concluidas 4"
+    }
+    ,
+    {
+      "type": "a",
+      "id": "755",
+      "text": "concluidas 5"
     }
   ],
   "urgentemente": [

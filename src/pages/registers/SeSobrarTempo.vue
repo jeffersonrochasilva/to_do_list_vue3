@@ -2,6 +2,9 @@
   <div>
     <CardFirst title="Se sobrar tempo" :data="pagination.app" />
     <!-- <CardFirst title="Se sobrar tempo" :data="appStore.seSobrarTempo" /> -->
+    <!-- <v-btn @click="pagination.setValuePage()">teste</v-btn>
+    <p>{{ pagination.num }}</p>
+    <p>{{ pagination.numb }}</p> -->
   </div>
 </template>
 
@@ -14,8 +17,14 @@ const appStore = useAppStore();
 const pagination = usePagination();
 
 onMounted(async () => {
+  console.log("funcionou");
   await appStore.getAllApis();
-  pagination.data = appStore.seSobrarTempo;
-  pagination.toGoPage();
+  appStore.stepCircle = true;
+  setTimeout(() => {
+    pagination.setValuePage();
+    pagination.data = appStore.seSobrarTempo;
+    pagination.toGoPage();
+    appStore.stepCircle = false;
+  }, 300);
 });
 </script>

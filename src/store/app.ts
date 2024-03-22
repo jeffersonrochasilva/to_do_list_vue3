@@ -189,6 +189,7 @@ export const useAppStore = defineStore("app", () => {
       await getDateUrgentemente();
       await getDateoQuantoAntes();
       await getDateseSobrarTempo();
+      await getActivitiesCheck();
     } catch (error: any) {
       console.log(error, "error");
     }

@@ -46,11 +46,7 @@ const items: Ref<any> = ref([
   },
 ]);
 const toGORoute = (item: string) => {
-  appStore.stepCircle = true;
-  setTimeout(() => {
-    appStore.stepCircle = false;
-    router.push(item);
-  }, 1000);
+  router.push(item);
 };
 </script>
 <style lang="scss" scoped>

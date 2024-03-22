@@ -15,7 +15,11 @@ const pagination = usePagination();
 onMounted(async () => {
   pagination.setValuePage();
   await appStore.getAllApis();
-  pagination.data = appStore.oQuantoAntes;
-  pagination.toGoPage();
+  appStore.stepCircle = true;
+  setTimeout(() => {
+    pagination.data = appStore.oQuantoAntes;
+    pagination.toGoPage();
+    appStore.stepCircle = false;
+  }, 300);
 });
 </script>

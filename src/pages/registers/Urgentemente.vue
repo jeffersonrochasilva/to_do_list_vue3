@@ -14,9 +14,13 @@ const appStore = useAppStore();
 const pagination = usePagination();
 
 onMounted(async () => {
-  pagination.setValuePage();
   await appStore.getAllApis();
-  pagination.data = appStore.urgentemente;
-  pagination.toGoPage();
+  appStore.stepCircle = true;
+  setTimeout(() => {
+    pagination.setValuePage();
+    pagination.data = appStore.urgentemente;
+    pagination.toGoPage();
+    appStore.stepCircle = false;
+  }, 300);
 });
 </script>
