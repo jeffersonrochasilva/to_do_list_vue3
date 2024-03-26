@@ -2,7 +2,7 @@
   <div class="login">
     <div class="boxImage">
       <img src="../assets/image.jpg" alt="image-logo" id="image" />
-      <h1>Desconplique.</h1>
+      <h1>Descomplique</h1>
     </div>
     <div class="boxForm">
       <FormLogin v-if="appStore.stepForm" />
