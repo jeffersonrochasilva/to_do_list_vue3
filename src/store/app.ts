@@ -127,6 +127,7 @@ export const useAppStore = defineStore("app", () => {
     try {
       const response = await axios.get(`${HTTP.development}concluidas`);
       concluidas.value = response.data;
+      // console.log("concluidas", conslcu)
     } catch (error: any) {
       console.log(error, "error");
     }

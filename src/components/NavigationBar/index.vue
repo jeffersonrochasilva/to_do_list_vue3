@@ -35,7 +35,7 @@ const items: Ref<any> = ref([
     route: "/sesobrartempo",
   },
   {
-    title: "Atividades concluidas",
+    title: "Actividades concluídas",
     icon: "mdi-check",
     route: "/activitiescheck",
   },

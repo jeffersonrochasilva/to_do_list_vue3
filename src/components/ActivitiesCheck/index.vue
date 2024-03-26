@@ -1,6 +1,6 @@
 <template>
   <div class="check">
-    <span class="title">atividades concluidas</span>
+    <span class="title">Actividades concluídas</span>
 
     <div>
       <v-card

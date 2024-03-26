@@ -9,7 +9,8 @@
         class="campLogin"
         variant="outlined"
         placeholder="Insira seu E-mail"
-        :counter="10"
+        :counter="256"
+        :maxLength="256"
         @blur="validateEmail"
       />
     </div>
@@ -19,7 +20,8 @@
         class="campLogin"
         variant="outlined"
         placeholder="Insira sua senha"
-        :counter="10"
+        :maxLength="8"
+        :counter="8"
       />
     </div>
     <div class="camp">
@@ -28,7 +30,8 @@
         class="campLogin"
         variant="outlined"
         placeholder="Confirme sua senha"
-        :counter="10"
+        :maxLength="8"
+        :counter="8"
       />
     </div>
 

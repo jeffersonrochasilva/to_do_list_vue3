@@ -11,7 +11,7 @@
         <div class="container">
           <div style="width: 100%; margin-bottom: 40px">
             <span class="title"
-              >Planilha de atividades com ordem de prioridades</span
+              >Planilha de actividades com ordem de prioridades</span
             >
           </div>
 
