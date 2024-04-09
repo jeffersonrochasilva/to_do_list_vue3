@@ -54,8 +54,10 @@
 <script lang="ts" setup>
 import { Ref, ref, watch } from "vue";
 import { useAppStore } from "../../store/app";
+import { usePagination } from "@/store/pagination";
 import axios from "axios";
 const appStopre = useAppStore();
+const pagination = usePagination();
 
 const activity: Ref<string> = ref(``);
 const model: Ref<string> = ref(``);
@@ -85,6 +87,12 @@ const addActivity = () => {
   }, 1000);
 };
 const aditeActivite = async () => {
+  if (model.value === "") {
+    return appStopre.setSnackbar(
+      "Escolha a importancia da sua atividade",
+      "warning"
+    );
+  }
   appStopre.stepCircle = true;
   let types = "";
   if (model.value === "urgentemente") {
@@ -101,20 +109,39 @@ const aditeActivite = async () => {
     id: (Math.floor(Math.random() * 900) + 100).toString(),
     text: appStopre.teste,
   };
+  let typeDelete = "";
+  if (appStopre.typeEdite === "b") {
+    typeDelete = "urgentemente";
+  }
+  if (appStopre.typeEdite === "c") {
+    typeDelete = "oQuantoAntes";
+  }
+  if (appStopre.typeEdite === "d") {
+    typeDelete = "seSobrarTempo";
+  }
   setTimeout(async () => {
     appStopre.stepCircle = false;
+    console.log(
+      "1",
+      `http://localhost:3000/${model.value}/${appStopre.idEdite}`
+    );
+    console.log("2", `http://localhost:3000/${model.value}`, obj);
+    console.log("3", model.value);
     try {
       await axios.delete(
-        `http://localhost:3000/${model.value}/${appStopre.idEdite}`
+        `http://localhost:3000/${typeDelete}/${appStopre.idEdite}`
       );
-
       await axios.post(`http://localhost:3000/${model.value}`, obj);
       appStopre.getAllApis();
+      await appStopre.reloadinInPage();
     } catch (error: any) {
       console.log(error, "error");
     }
+    appStopre.teste = "";
+    model.value = "";
   }, 1000);
 };
+
 const postSetActivit = () => {
   appStopre.stepEdit ? aditeActivite() : addActivity();
 };

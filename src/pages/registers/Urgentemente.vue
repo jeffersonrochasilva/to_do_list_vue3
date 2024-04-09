@@ -21,6 +21,7 @@ onMounted(async () => {
     pagination.data = appStore.urgentemente;
     pagination.toGoPage();
     appStore.stepCircle = false;
+    appStore.stepRouter = 1;
   }, 300);
 });
 </script>

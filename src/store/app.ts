@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
 import axios from "axios";
-import { HTTP } from "../http.ts";
+import { HTTP } from "../http";
 import { usePagination } from "./pagination";
 // Interface para representar um item de tarefa
 interface TaskItem {
@@ -27,7 +27,9 @@ interface AppState {
   stepEdit: Ref<boolean>;
   snackbar: Ref<boolean>;
   typeEdite: Ref<string>;
+  stepRouter: Ref<number>;
   stepCircle: Ref<boolean>;
+  reloadinInPage: Ref<any>;
   editValueInJson: Ref<any>;
   setUrgentemente: Ref<any>;
   setoQuantoAntes: Ref<any>;
@@ -51,45 +53,57 @@ interface AppState {
   seSobrarTempo: Ref<TaskItem[]>;
   getDateseSobrarTempo: Ref<any>;
   pushInActivitiesCheck: Ref<any>;
+  reloadingUrgentemente: Ref<any>;
+  realoadingOQuantoAntes: Ref<any>;
+  reloadingSeSobrarTempo: Ref<any>;
+  reloadingactivitesCheck: Ref<any>;
   deleteItemActivitiesCheck: Ref<any>;
   activitiesCheck: Ref<ActivitiesFace[]>;
 }
 
 export const useAppStore = defineStore("app", () => {
   const pagination = usePagination();
-  const nome: Ref<string> = ref("jefferson");
-  const teste: Ref<string> = ref("");
-  const typeOfRegister: Ref<string> = ref("");
-  const urgentemente: Ref<TaskItem[]> = ref([]);
-  const oQuantoAntes: Ref<TaskItem[]> = ref([]);
-  const seSobrarTempo: Ref<TaskItem[]> = ref([]);
-  const concluidas: Ref<TaskItem[]> = ref([]);
-  const dateFormated: Ref<TaskItem[]> = ref([]);
-  const stepForm: Ref<boolean> = ref(true);
-  const stepCircle: Ref<boolean> = ref(false);
-  const stepEdit: Ref<boolean> = ref(false);
-  const idEdite: Ref<string> = ref("");
-  const typeEdite: Ref<string> = ref("");
+  const nome = ref("");
+  const teste = ref("");
+  const typeOfRegister = ref("");
+  const urgentemente = ref([]);
+  const oQuantoAntes = ref([]);
+  const seSobrarTempo = ref([]);
+  const concluidas = ref([]);
+  const dateFormated = ref([]);
+  const stepForm = ref(true);
+  const stepCircle = ref(false);
+  const stepRouter = ref(0);
+  const stepEdit = ref(false);
+  const idEdite = ref("");
+  const typeEdite = ref("");
 
   const activitiesCheck = ref([{ name: "colocar o lixa pra fora" }]);
-  const color: Ref<string> = ref("");
-  const text: Ref<string> = ref("");
-  const snackbar: Ref<boolean> = ref(false);
+  const color = ref("");
+  const text = ref("");
+  const snackbar = ref(false);
 
   const setUrgentemente = (item: string) => {
-    const arr = urgentemente.value.filter((params) => params.text != item);
+    const arr = urgentemente.value.filter(
+      (params: TaskItem) => params.text != item
+    );
     urgentemente.value = arr;
   };
   const setoQuantoAntes = (item: string) => {
-    const arr = oQuantoAntes.value.filter((params) => params.text != item);
+    const arr = oQuantoAntes.value.filter(
+      (params: TaskItem) => params.text != item
+    );
     oQuantoAntes.value = arr;
   };
   const setSeSobrarTempo = (item: string) => {
-    const arr = seSobrarTempo.value.filter((params) => params.text != item);
+    const arr = seSobrarTempo.value.filter(
+      (params: TaskItem) => params.text != item
+    );
     seSobrarTempo.value = arr;
   };
 
   const pushInActivitiesCheck = async (item: TaskItem) => {
+    console.log("item do check", item);
     const obj = {
       text: item.text,
       type: item.type,
@@ -99,7 +113,7 @@ export const useAppStore = defineStore("app", () => {
     try {
       await axios.post(`${HTTP.development}concluidas`, obj);
       await deleteValueInJson(item);
-      getAllApis();
+      await reloadinInPage();
     } catch (error: any) {
       console.log(error, "error");
     }
@@ -160,7 +174,7 @@ export const useAppStore = defineStore("app", () => {
     };
     try {
       await axios.post(`${HTTP.development}${typeOfRegister.value}`, obj);
-      getAllApis();
+      reloadinInPage();
     } catch (error) {
       console.log(error, "error");
     }
@@ -184,8 +198,6 @@ export const useAppStore = defineStore("app", () => {
   };
 
   const getAllApis = async () => {
-    console.log("camou o get all apis");
-
     try {
       await getDateUrgentemente();
       await getDateoQuantoAntes();
@@ -207,17 +219,17 @@ export const useAppStore = defineStore("app", () => {
     }
   };
   const deleteValueInJson = async (item: any) => {
+    console.log("item", item.type);
     if (item.type === "b") {
       await deleteUrgentemente(item.id);
-    }
-    if (item.type === "c") {
+    } else if (item.type === "c") {
       await deleteoQuantoAntes(item.id);
-    }
-    if (item.type === "d") {
+    } else if (item.type === "d") {
       await deleteseSobrarTempo(item.id);
     } else {
       console.log("ERROR");
     }
+    await reloadinInPage();
   };
 
   const editarUrgentemente = async (item: any) => {
@@ -242,7 +254,7 @@ export const useAppStore = defineStore("app", () => {
       await axios.put(`${HTTP.development}seSobrarTempo/${item.id}`, item);
       await getDateseSobrarTempo();
     } catch (error: any) {
-      console.log(error);
+      console.log(error, "errorrr");
     }
   };
 
@@ -275,7 +287,63 @@ export const useAppStore = defineStore("app", () => {
     idEdite.value = item.id;
     typeEdite.value = item.type;
   };
+  const reloadingUrgentemente = async () => {
+    await getAllApis();
+    stepCircle.value = true;
+    setTimeout(() => {
+      pagination.setValuePage();
+      pagination.data = urgentemente.value;
+      pagination.toGoPage();
+      stepCircle.value = false;
+      stepRouter.value = 1;
+    }, 300);
+  };
+  const realoadingOQuantoAntes = async () => {
+    pagination.setValuePage();
+    await getAllApis();
+    stepCircle.value = true;
+    setTimeout(() => {
+      pagination.data = oQuantoAntes.value;
+      pagination.toGoPage();
+      stepCircle.value = false;
+      stepRouter.value = 3;
+    }, 300);
+  };
+  const reloadingSeSobrarTempo = async () => {
+    await getAllApis();
+    stepCircle.value = true;
+    setTimeout(() => {
+      pagination.setValuePage();
+      pagination.data = seSobrarTempo.value;
+      pagination.toGoPage();
+      stepCircle.value = false;
+      stepRouter.value = 2;
+    }, 300);
+  };
+
+  const reloadingactivitesCheck = async () => {
+    await getAllApis();
+    stepCircle.value = true;
+    setTimeout(() => {
+      pagination.setValuePage();
+      pagination.data = concluidas.value;
+      pagination.toGoPage();
+      stepCircle.value = false;
+      stepRouter.value = 4;
+    }, 300);
+  };
   getActivitiesCheck();
+  const reloadinInPage = async () => {
+    if (stepRouter.value === 1) {
+      await reloadingUrgentemente();
+    } else if (stepRouter.value === 2) {
+      await reloadingSeSobrarTempo();
+    } else if (stepRouter.value === 3) {
+      await realoadingOQuantoAntes();
+    } else if (stepRouter.value === 4) {
+      await reloadingactivitesCheck();
+    }
+  };
   return {
     nome,
     text,
@@ -287,6 +355,7 @@ export const useAppStore = defineStore("app", () => {
     stepEdit,
     typeEdite,
     stepCircle,
+    stepRouter,
     concluidas,
     urgentemente,
     dateFormated,
@@ -297,6 +366,7 @@ export const useAppStore = defineStore("app", () => {
     setTeste,
     getAllApis,
     setSnackbar,
+    reloadinInPage,
     editValueInJson,
     setoQuantoAntes,
     setUrgentemente,
@@ -314,6 +384,10 @@ export const useAppStore = defineStore("app", () => {
     getDateoQuantoAntes,
     getDateseSobrarTempo,
     pushInActivitiesCheck,
+    reloadingUrgentemente,
+    realoadingOQuantoAntes,
+    reloadingSeSobrarTempo,
+    reloadingactivitesCheck,
     deleteItemActivitiesCheck,
   } as unknown as AppState;
 });

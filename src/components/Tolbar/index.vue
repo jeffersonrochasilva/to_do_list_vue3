@@ -30,7 +30,7 @@ import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const items: Ref<any> = ref([
-  { title: "Urgentemente", icon: "mdi-clock-outline", route: "/" },
+  { title: "Urgentemente", icon: "mdi-clock-outline", route: "/home" },
   {
     title: "O quanto antes",
     icon: "mdi-clock-outline",

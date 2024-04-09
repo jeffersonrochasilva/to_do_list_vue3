@@ -6,7 +6,6 @@
           <div class="boxIcon">
             <v-icon>{{ item.icon }}</v-icon>
           </div>
-
           <div>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </div>

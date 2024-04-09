@@ -1,9 +1,6 @@
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
-import { useAppStore } from "./app";
 export const usePagination = defineStore("pagination", () => {
-  const appStore = useAppStore();
-
   const i: Ref<number> = ref(0);
   const num: Ref<number> = ref(0);
   const numb: Ref<any> = ref(0);
@@ -18,7 +15,6 @@ export const usePagination = defineStore("pagination", () => {
   const firstAccess: Ref<boolean> = ref(true);
 
   const toGoPage = () => {
-    console.log("camou o go to");
     if (numb.value >= data.value.length) {
       return;
     }
@@ -32,16 +28,10 @@ export const usePagination = defineStore("pagination", () => {
       numb.value = numb.value + 4;
     }
     app.value = data.value.slice(num.value, numb.value);
-    // if (firstAccess.value) {
-    //   firstAccess.value = false;
-    //   return;
-    // }
     numPagination.value++;
   };
 
   const goBackPage = () => {
-    console.log("camou o back page");
-
     if (numPagination.value === 1) {
       return;
     } else {
